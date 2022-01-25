@@ -1,0 +1,1 @@
+In this project, I will be creating a game of Mastermind in the command line using Ruby. The aim of developing this project is to further expand my knowledge of the OOP model.
