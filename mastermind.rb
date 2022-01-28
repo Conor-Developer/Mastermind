@@ -83,14 +83,10 @@ end
 
 # Computer Player
 class Computer < String
-
   def initialize
     @colours = [one_red, two_blue, three_green, four_magenta, five_yellow, six_cyan]
     @random_colour_selection = []
-   # @temp_random_colour_selection = []
-    # @temp_copy_random_colour_selection = ''
     @game_rounds = 12
-    #@player_guess_array = []
     @continue_game = true
     random_colours
   end
@@ -103,26 +99,21 @@ class Computer < String
   end
 
   def declare_winner(player_guess_array)
-    return unless player_guess_array[0] == 0
-  
-   winner = player_guess_array.all? do |element|
-      element == 0
-      end
+    return unless player_guess_array[0].zero?
 
-    if winner == true
-      puts 'Winner!'
-      @continue_game = false
+    winner = player_guess_array.all? do |element|
+      element == 0
     end
+
+    return unless winner == true
+
+    puts 'Winner!'
+    @continue_game = false
   end
 
   def game_rounds
     puts "Choices of colours/pegs:\n\n"
     puts @colours
-   # puts "\n\n"
-    #puts "Random Colours chosen by computer (answers):\n\n"
-    #puts "This is the @random_colour_selection array (this array shouldn't be able to be changed)"
-   # puts @random_colour_selection
-   # puts "\n\n"
     guess until @game_rounds.zero? || @continue_game == false
   end
 
@@ -130,21 +121,18 @@ class Computer < String
     player_guess_array = []
     temp_random_colour_selection = @random_colour_selection.clone
     clues = []
-    #@random_colour_selection = [one_red, two_blue, five_yellow, one_red]
-    #@temp_random_colour_selection = @random_colour_selection.clone
-    #puts temp_copy_random_colour_selection
-    #puts "-----"
     puts "This is the @random_colour_selection array (this array shouldn't be able to be changed)"
     puts @random_colour_selection
-    
 
     loop do
       continue = false
-      puts 'Guess the order and colours of 4 pegs (between 0-9):'
+      player_guess_array = []
+      puts 'Guess the order and colours of 4 pegs (between 1-6):'
       player_guess = gets.chomp.chars
       player_guess.each { |x| player_guess_array.push(x.to_i) }
-    
-      if player_guess_array.any? { |z| z <= 9 && z >= 1 }
+      puts player_guess_array.count
+
+      if player_guess_array.any? { |z| z <= 6 && z >= 1 && player_guess_array.count == 4}
         continue = true
       end
 
@@ -153,26 +141,26 @@ class Computer < String
 
     player_guess_array.each_index do |i|
 
-    case player_guess_array[i]
+      case player_guess_array[i]
 
-    when 1
-      player_guess_array[i] = one_red
+      when 1
+        player_guess_array[i] = one_red
 
-    when 2
-      player_guess_array[i] = two_blue
+      when 2
+        player_guess_array[i] = two_blue
 
-    when 3
-      player_guess_array[i] = three_green
+      when 3
+        player_guess_array[i] = three_green
 
-    when 4
-      player_guess_array[i] = four_magenta
+      when 4
+        player_guess_array[i] = four_magenta
 
-    when 5
-      player_guess_array[i] = five_yellow
+      when 5
+        player_guess_array[i] = five_yellow
 
-    when 6
-      player_guess_array[i] = six_cyan
-    end
+      when 6
+        player_guess_array[i] = six_cyan
+      end
     end
 
     player_guess_array.each_index do |p_index|
@@ -194,18 +182,17 @@ class Computer < String
    # puts "FIRST Iteration:"
    # puts @player_guess_array
    # puts @temp_random_colour_selection
-    
 
     player_guess_array.each_index do |p_index|
       temp_random_colour_selection.each_index do |r_index|
-         #puts "Second Iteration:"
-         #puts "Player Guess Array:"
-         #puts player_guess_array[p_index]
-         #puts "Temp Random Colour Selection:"
-         #puts temp_random_colour_selection[r_index]
-       if player_guess_array[p_index] == temp_random_colour_selection[r_index]
+         # puts "Second Iteration:"
+         # puts "Player Guess Array:"
+         # puts player_guess_array[p_index]
+         # puts "Temp Random Colour Selection:"
+         # puts temp_random_colour_selection[r_index]
+        if player_guess_array[p_index] == temp_random_colour_selection[r_index]
           clues.push(partially_correct_clue)
-         # puts clues
+          # puts clues
           player_guess_array[p_index] = 2
           temp_random_colour_selection[r_index] = 3
           break
@@ -213,20 +200,17 @@ class Computer < String
       end
     end
 
-   # puts "Second Iteration:"
-    #puts @player_guess_array
-   # puts @temp_random_colour_selection
+    # puts "Second Iteration:"
+    # puts @player_guess_array
+    # puts @temp_random_colour_selection
 
     @game_rounds -= 1
-    puts clues
+    puts clues.shuffle
     declare_winner(player_guess_array)
     return if @continue_game == false
+
     puts "You have #{@game_rounds} rounds left"
   end
-
 end
 
 game = Computer.new
-
-
-# Force user to choose 4 numbers (no more, no less)
